@@ -8,10 +8,9 @@ variables:
   tag: '$(Build.BuildId)'
  
 steps:
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: 'git submodule update --init --recursive'
+- checkout: self
+  clean: true
+  submodules: recursive
 - task: Docker@2
   displayName: Build an Character Service Image
   inputs:
