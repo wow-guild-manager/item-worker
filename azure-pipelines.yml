@@ -8,9 +8,6 @@ variables:
   tag: '$(Build.BuildId)'
  
 steps:
-- checkout: self
-  clean: true
-  submodules: recursive
 - task: Docker@2
   displayName: Build an Character Service Image
   inputs:
