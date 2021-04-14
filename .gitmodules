@@ -1,0 +1,3 @@
+[submodule "src/blizzard-wow-classic-api"]
+	path = src/blizzard-wow-classic-api
+	url = https://github.com/Hantse/blizzard-wow-classic-api
