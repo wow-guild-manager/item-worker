@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.8.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.14" />
+    <PackageReference Include="WGM.Infrastructure.Core" Version="1.0.0-CI-20210529-094636" />
   </ItemGroup>
 
   <ItemGroup>

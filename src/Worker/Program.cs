@@ -1,6 +1,11 @@
+using Infrastructure.Core.Extensions;
+using Infrastructure.Core.Interfaces;
+using Infrastructure.Core.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Worker.Interfaces;
+using Worker.Repositories;
 using Worker.Services;
 
 namespace Worker
@@ -19,7 +24,11 @@ namespace Worker
                     webBuilder.UseStartup<Startup>();
                 }).ConfigureServices(services =>
                 {
+                    services.AddScoped<IDatabaseConnectionFactory, SqlDbConnectionFactory>();
+                    services.AddScoped<IItemRepository, ItemRepository>();
+                    services.AddScoped<IItemNotFoundRepository, ItemNotFoundRepository>();
                     services.AddHostedService<ItemPullerService>();
-                });
+                })
+                .RegisterKeyVault();
     }
 }
