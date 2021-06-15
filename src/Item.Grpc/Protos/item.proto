@@ -1,0 +1,27 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "WGM.Service.Item";
+package item;
+
+service ItemGrpcService {
+  rpc GetItems (QueryMultipleRequest) returns (QueryMultipleResultReply);
+  rpc GetItem (QueryRequest) returns (QueryResultReply);
+  rpc GetSpells (QueryMultipleRequest) returns (QueryMultipleResultReply);
+  rpc GetSpell (QueryRequest) returns (QueryResultReply);
+}
+
+message QueryMultipleRequest {
+  repeated int32 ids = 1;
+}
+
+message QueryRequest {
+  int32 id = 1;
+}
+
+message QueryMultipleResultReply{
+  repeated string value = 1;
+}
+
+message QueryResultReply {
+  string value = 1;
+}

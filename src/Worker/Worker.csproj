@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\blizzard-wow-classic-api\src\Blizzard.WoWClassic.ApiClient\Blizzard.WoWClassic.ApiClient.csproj" />
     <ProjectReference Include="..\blizzard-wow-classic-api\src\Blizzard.WoWClassic.ApiContract\Blizzard.WoWClassic.ApiContract.csproj" />
+    <ProjectReference Include="..\Item.Grpc\Item.Grpc.csproj" />
   </ItemGroup>
 
 </Project>

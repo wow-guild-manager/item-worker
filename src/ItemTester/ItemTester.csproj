@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\blizzard-wow-classic-api\src\Blizzard.WoWClassic.ApiClient\Blizzard.WoWClassic.ApiClient.csproj" />
+    <ProjectReference Include="..\blizzard-wow-classic-api\src\Blizzard.WoWClassic.ApiContract\Blizzard.WoWClassic.ApiContract.csproj" />
+  </ItemGroup>
+
+</Project>

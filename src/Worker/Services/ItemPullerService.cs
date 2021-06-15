@@ -2,6 +2,7 @@
 using Blizzard.WoWClassic.ApiClient;
 using Blizzard.WoWClassic.ApiClient.Exceptions;
 using Blizzard.WoWClassic.ApiClient.Helpers;
+using Blizzard.WoWClassic.ApiContract.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -76,6 +77,8 @@ namespace Worker.Services
 
                 try
                 {
+                    var spellDetails = await clientWow.GetSpellDetailsAsync(21992);
+
                     var itemDetails = await clientWow.GetItemDetailsAsync(itemId, RegionHelper.Us, NamespaceHelper.Static);
 
                     if (itemDetails != null)
@@ -136,9 +139,9 @@ namespace Worker.Services
             }
         }
 
-        private Item Map(Blizzard.WoWClassic.ApiContract.Items.ItemDetails itemDetails)
+        private Worker.Infrastructure.Entities.Item Map(Blizzard.WoWClassic.ApiContract.Items.ItemDetails itemDetails)
         {
-            return new Item()
+            return new Worker.Infrastructure.Entities.Item()
             {
                 CreateAt = DateTime.UtcNow,
                 Id = Guid.NewGuid(),
@@ -152,6 +155,23 @@ namespace Worker.Services
                 ItemSubClass = itemDetails.ItemSubclass.Name.EnUs,
                 Value = JsonSerializer.Serialize(itemDetails),
                 CreateBy = "System Worker"
+            };
+        }
+
+        private Worker.Infrastructure.Entities.Spell Map(Blizzard.WoWClassic.ApiContract.Core.SpellValue<ValueLocale> spellDetails)
+        {
+            return new Worker.Infrastructure.Entities.Spell()
+            {
+                Id = Guid.NewGuid(),
+                CreateAt = DateTime.UtcNow,
+                CreateBy = "System Worker",
+                NameFrFr = spellDetails.Spell.Name.FrFR,
+                NameEnGb = spellDetails.Spell.Name.EnGb,
+                NameEnUs = spellDetails.Spell.Name.EnUs,
+                Value = JsonSerializer.Serialize(spellDetails),
+                DescriptionFrFr = spellDetails.Description.FrFR,
+                DescriptionEnUs = spellDetails.Description.EnUs,
+                DescriptionEnGb = spellDetails.Description.EnGb
             };
         }
 

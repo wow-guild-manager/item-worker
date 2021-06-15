@@ -9,7 +9,7 @@ variables:
  
 steps:
 - task: Docker@2
-  displayName: Build an Character Service Image
+  displayName: Build an Item Worker Image
   inputs:
     containerRegistry: 'DockerHub'
     repository: 'hantse/wgm-item-worker'

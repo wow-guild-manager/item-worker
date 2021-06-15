@@ -10,7 +10,7 @@ using Worker.Interfaces;
 
 namespace Worker.Repositories
 {
-    public class ItemRepository : CoreRepository<Item>, IItemRepository
+    public class ItemRepository : CoreRepository<Worker.Infrastructure.Entities.Item>, IItemRepository
     {
         private const string SQLQUERY_SELECT_SINGLE_BY_ID = "SELECT TOP (1) * FROM Item WHERE ItemId = @ItemId;";
 
@@ -22,57 +22,69 @@ namespace Worker.Repositories
                                         "Value = @Value, UpdateAt = @UpdateAt, UpdateBy = @UpdateBy " +
                                         "WHERE ItemId = @ItemId;";
 
-        public ItemRepository(IDatabaseConnectionFactory connectionFactory, ILogger<CoreRepository<Item>> logger) : base(connectionFactory, logger)
+        private const string SQLQUERY_SELECT_BY_IDS = "SELECT * FROM Item WHERE ItemId IN @ItemIds;";
+
+        public ItemRepository(IDatabaseConnectionFactory connectionFactory, ILogger<CoreRepository<Worker.Infrastructure.Entities.Item>> logger) : base(connectionFactory, logger)
         {
         }
 
-        public override Task<int> DeleteAsync(Item entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<int> DeletesAsync(Item[] entities)
+        public override Task<int> DeleteAsync(Worker.Infrastructure.Entities.Item entity)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<Guid?> InsertAsync(Item entity)
+        public override Task<int> DeletesAsync(Worker.Infrastructure.Entities.Item[] entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task<Guid?> InsertAsync(Worker.Infrastructure.Entities.Item entity)
         {
             return CoreInsertAsync(entity);
         }
 
-        public override Task<int> InsertsAsync(Item[] entities)
+        public override Task<int> InsertsAsync(Worker.Infrastructure.Entities.Item[] entities)
         {
             return CoreInsertsAsync(SQLQUERY_INSERT, entities);
         }
 
-        public override Task<IEnumerable<Item>> QueryMultipleAsync(Item query)
+        public override Task<IEnumerable<Worker.Infrastructure.Entities.Item>> QueryMultipleAsync(Worker.Infrastructure.Entities.Item query)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<IEnumerable<Item>> QueryMultipleByIdAsync(Guid[] ids)
+        public override Task<IEnumerable<Worker.Infrastructure.Entities.Item>> QueryMultipleByIdAsync(Guid[] ids)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<Item> QueryOneAsync(Item query)
+        public override Task<Worker.Infrastructure.Entities.Item> QueryOneAsync(Worker.Infrastructure.Entities.Item query)
         {
             var connection = connectionFactory.GetConnection();
-            return connection.QueryFirstOrDefaultAsync<Item>(SQLQUERY_SELECT_SINGLE_BY_ID, query);
+            return connection.QueryFirstOrDefaultAsync<Worker.Infrastructure.Entities.Item>(SQLQUERY_SELECT_SINGLE_BY_ID, query);
         }
 
-        public override Task<Item> QueryOneByIdAsync(Guid id)
+        public async Task<IEnumerable<Worker.Infrastructure.Entities.Item>> QueryMultipleByIdAsync(int[] itemIds)
+        {
+            var connection = connectionFactory.GetConnection();
+
+            using (var multi = connection.QueryMultiple(SQLQUERY_SELECT_BY_IDS, itemIds))
+            {
+                return await multi.ReadAsync<Worker.Infrastructure.Entities.Item>();
+            }
+        }
+
+        public override Task<Worker.Infrastructure.Entities.Item> QueryOneByIdAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<int> UpdateAsync(Item entity)
+        public override Task<int> UpdateAsync(Worker.Infrastructure.Entities.Item entity)
         {
             return CoreUpdateAsync(SQLQUERY_UPDATE, entity);
         }
 
-        public override Task<int> UpdatesAsync(Item[] entities)
+        public override Task<int> UpdatesAsync(Worker.Infrastructure.Entities.Item[] entities)
         {
             throw new NotImplementedException();
         }

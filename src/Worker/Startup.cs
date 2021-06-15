@@ -2,15 +2,11 @@ using Infrastructure.Core.Interfaces;
 using Infrastructure.Core.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Worker.Interfaces;
 using Worker.Repositories;
+using Worker.Services;
 
 namespace Worker
 {
@@ -23,6 +19,7 @@ namespace Worker
             services.AddScoped<IDatabaseConnectionFactory, SqlDbConnectionFactory>();
             services.AddScoped<IItemRepository, ItemRepository>();
             services.AddScoped<IItemNotFoundRepository, ItemNotFoundRepository>();
+            services.AddScoped<ISpellRepository, SpellRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,10 +34,7 @@ namespace Worker
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapGrpcService<ItemService>();
             });
         }
     }
