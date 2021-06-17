@@ -45,3 +45,11 @@ steps:
       tags: |
         $(tag)
         latest
+  
+  - task: NuGetCommand@2
+    displayName: Push To NuGet
+    inputs:
+      command: 'push'
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+      nuGetFeedType: 'external'
+      publishFeedCredentials: 'NuGet'      
