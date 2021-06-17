@@ -77,8 +77,6 @@ namespace Worker.Services
 
                 try
                 {
-                    var spellDetails = await clientWow.GetSpellDetailsAsync(21992);
-
                     var itemDetails = await clientWow.GetItemDetailsAsync(itemId, RegionHelper.Us, NamespaceHelper.Static);
 
                     if (itemDetails != null)
@@ -102,8 +100,9 @@ namespace Worker.Services
                         {
                             var itemDb = Map(itemDetails);
                             await itemRepository.InsertAsync(itemDb);
-
                         }
+
+                        await ProcessSpellAsync(itemDetails.PreviewItem.Spells);
 
                         //await UploadToAzureItem($"{itemId}.json", Encoding.UTF8.GetBytes(JsonSerializer.Serialize(itemDetails)));
                     }
@@ -134,7 +133,54 @@ namespace Worker.Services
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"Error ... {e.Message} => Item ID : {itemId}");
+                    Console.WriteLine($"Error ... {e.Message} => Item ID : {itemId} not insert.");
+                }
+            }
+        }
+
+        private async Task ProcessSpellAsync(SpellValue<ValueLocale>[] spells)
+        {
+            if (spells != null)
+            {
+                using (var scope = serviceProvider.CreateScope())
+                {
+                    var spellRepository =
+                            scope.ServiceProvider
+                            .GetRequiredService<ISpellRepository>();
+
+                    foreach (var spell in spells)
+                    {
+                        try
+                        {
+                            var spellDb = await spellRepository.QueryOneAsync(new Spell()
+                            {
+                                SpellId = spell.Spell.Id
+                            });
+
+                            if (spellDb == null)
+                            {
+                                var newSpell = Map(spell);
+                                await spellRepository.InsertAsync(newSpell);
+                            }
+                            else
+                            {
+                                var spellToUpdate = Map(spell);
+
+                                spellToUpdate.Id = spellDb.Id;
+                                spellToUpdate.CreateAt = spellDb.CreateAt;
+                                spellToUpdate.CreateBy = spellDb.CreateBy;
+                                spellToUpdate.UpdateAt = DateTime.UtcNow;
+                                spellToUpdate.UpdateBy = "System Worker";
+
+                                await spellRepository.UpdateAsync(spellDb);
+                            }
+
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine($"Error ... {e.Message} => Spell ID : {spell.Spell.Id} not insert.");
+                        }
+                    }
                 }
             }
         }

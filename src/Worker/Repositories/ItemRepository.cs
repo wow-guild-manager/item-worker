@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Worker.Contracts.Request;
 using Worker.Infrastructure.Entities;
 using Worker.Interfaces;
 
@@ -24,16 +25,22 @@ namespace Worker.Repositories
 
         private const string SQLQUERY_SELECT_BY_IDS = "SELECT * FROM Item WHERE ItemId IN @ItemIds;";
 
-        public ItemRepository(IDatabaseConnectionFactory connectionFactory, ILogger<CoreRepository<Worker.Infrastructure.Entities.Item>> logger) : base(connectionFactory, logger)
+        private const string SQLQUERY_SEARCH = "SELECT * FROM Item WHERE ItemId = @Search " +
+                                                "OR NameFrFr LIKE CONCAT('%', @Search, '%') " +
+                                                "OR NameEnUs LIKE CONCAT('%', @Search, '%') " +
+                                                "OR NameEnGb LIKE CONCAT('%', @Search, '%')";
+
+        public ItemRepository(IDatabaseConnectionFactory connectionFactory, ILogger<CoreRepository<Infrastructure.Entities.Item>> logger) 
+            : base(connectionFactory, logger)
         {
         }
 
-        public override Task<int> DeleteAsync(Worker.Infrastructure.Entities.Item entity)
+        public override Task<int> DeleteAsync(Infrastructure.Entities.Item entity)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<int> DeletesAsync(Worker.Infrastructure.Entities.Item[] entities)
+        public override Task<int> DeletesAsync(Infrastructure.Entities.Item[] entities)
         {
             throw new NotImplementedException();
         }
@@ -48,7 +55,23 @@ namespace Worker.Repositories
             return CoreInsertsAsync(SQLQUERY_INSERT, entities);
         }
 
-        public override Task<IEnumerable<Worker.Infrastructure.Entities.Item>> QueryMultipleAsync(Worker.Infrastructure.Entities.Item query)
+        public async Task<IEnumerable<Infrastructure.Entities.Item>> QueryMultipleAsync(QueryItemRequest queryItemRequest)
+        {
+            var connection = connectionFactory.GetConnection();
+            var query = SQLQUERY_SEARCH;
+
+            if (!string.IsNullOrEmpty(queryItemRequest.Quality))
+            {
+                query += " AND Quality = @Quality";
+            }
+
+            using (var multi = connection.QueryMultiple(query, queryItemRequest))
+            {
+                return await multi.ReadAsync<Worker.Infrastructure.Entities.Item>();
+            }
+        }
+
+        public override Task<IEnumerable<Worker.Infrastructure.Entities.Item>> QueryMultipleAsync(Infrastructure.Entities.Item query)
         {
             throw new NotImplementedException();
         }
