@@ -47,7 +47,7 @@ namespace Worker.Services
                 Console.WriteLine($"Items not found {itemNotFoundId.Count}");
             }
 
-            for (var i = 1; i < 65000; i++)
+            for (var i = 1; i < 85000; i++)
             {
                 try
                 {
@@ -209,6 +209,7 @@ namespace Worker.Services
             return new Worker.Infrastructure.Entities.Spell()
             {
                 Id = Guid.NewGuid(),
+                SpellId = spellDetails.Spell.Id,
                 CreateAt = DateTime.UtcNow,
                 CreateBy = "System Worker",
                 NameFrFr = spellDetails.Spell.Name.FrFR,
