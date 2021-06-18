@@ -20,7 +20,7 @@ namespace Item.Grpc.Services
         public ItemService(ILogger<ItemService> logger)
         {
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
-            var channel = GrpcChannel.ForAddress("http://item-worker:6000");
+            var channel = GrpcChannel.ForAddress("http://service-item:6000");
             this.client = new ItemGrpcService.ItemGrpcServiceClient(channel);
             this.logger = logger;
         }
