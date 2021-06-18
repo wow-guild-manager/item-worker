@@ -6,8 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\blizzard-wow-classic-api\src\Blizzard.WoWClassic.ApiClient\Blizzard.WoWClassic.ApiClient.csproj" />
-    <ProjectReference Include="..\blizzard-wow-classic-api\src\Blizzard.WoWClassic.ApiContract\Blizzard.WoWClassic.ApiContract.csproj" />
+    <PackageReference Include="WoWClassic.ApiClient" Version="1.0.0-CI-20210618-073727" />
   </ItemGroup>
 
 </Project>

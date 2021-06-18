@@ -22,10 +22,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\blizzard-wow-classic-api\src\Blizzard.WoWClassic.ApiContract\Blizzard.WoWClassic.ApiContract.csproj" />
+    <PackageReference Include="WoWClassic.ApiClient" Version="1.0.0-CI-20210618-073727" />
   </ItemGroup>
 
   <ItemGroup>
