@@ -30,6 +30,11 @@ namespace Worker.Repositories
                                                 "OR NameEnUs LIKE CONCAT('%', @Search, '%') " +
                                                 "OR NameEnGb LIKE CONCAT('%', @Search, '%')";
 
+        private const string SQLQUERY_SEARCH_WITHOUTID = "SELECT * FROM Item WHERE " +
+                                        "NameFrFr LIKE CONCAT('%', @Search, '%') " +
+                                        "OR NameEnUs LIKE CONCAT('%', @Search, '%') " +
+                                        "OR NameEnGb LIKE CONCAT('%', @Search, '%')";
+
         public ItemRepository(IDatabaseConnectionFactory connectionFactory, ILogger<CoreRepository<Infrastructure.Entities.Item>> logger) 
             : base(connectionFactory, logger)
         {
@@ -58,7 +63,7 @@ namespace Worker.Repositories
         public async Task<IEnumerable<Infrastructure.Entities.Item>> QueryMultipleAsync(QueryItemRequest queryItemRequest)
         {
             var connection = connectionFactory.GetConnection();
-            var query = SQLQUERY_SEARCH;
+            var query = int.TryParse(queryItemRequest.Search, out int _) ? SQLQUERY_SEARCH : SQLQUERY_SEARCH_WITHOUTID;
 
             if (!string.IsNullOrEmpty(queryItemRequest.Quality))
             {
