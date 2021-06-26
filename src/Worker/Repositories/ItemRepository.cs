@@ -96,7 +96,7 @@ namespace Worker.Repositories
         {
             var connection = connectionFactory.GetConnection();
 
-            using (var multi = connection.QueryMultiple(SQLQUERY_SELECT_BY_IDS, itemIds))
+            using (var multi = connection.QueryMultiple(SQLQUERY_SELECT_BY_IDS, new { ItemIds = itemIds }))
             {
                 return await multi.ReadAsync<Worker.Infrastructure.Entities.Item>();
             }
