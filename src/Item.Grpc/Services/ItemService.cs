@@ -44,7 +44,7 @@ namespace Item.Grpc.Services
             return default(ItemDetails[]);
         }
 
-        public async Task<ItemDetails> GetItemsAsync(QueryRequest request)
+        public async Task<ItemDetails> GetItemAsync(QueryRequest request)
         {
             try
             {

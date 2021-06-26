@@ -8,7 +8,7 @@ namespace Item.Grpc.Interfaces
     public interface IItemService
     {
         Task<ItemDetails[]> GetItemsAsync(QueryMultipleRequest request);
-        Task<ItemDetails> GetItemsAsync(QueryRequest request);
+        Task<ItemDetails> GetItemAsync(QueryRequest request);
         Task<SpellValue<ValueLocale>[]> GetSpellsAsync(QueryMultipleRequest request);
         Task<SpellValue<ValueLocale>> GetSpellAsync(QueryRequest request);
     }
