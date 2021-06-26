@@ -49,6 +49,7 @@ namespace Worker
                     services.AddScoped<IItemRepository, ItemRepository>();
                     services.AddScoped<IItemNotFoundRepository, ItemNotFoundRepository>();
                     services.AddHostedService<ItemPullerService>();
+                    services.AddHostedService<SpellPullerService>();
                 })
                 .RegisterKeyVault();
     }
