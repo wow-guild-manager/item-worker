@@ -125,9 +125,9 @@ namespace Worker.Services
             }
         }
 
-        private Worker.Infrastructure.Entities.Spell Map(Blizzard.WoWClassic.ApiContract.Core.SpellValue<ValueLocale> spellDetails)
+        private Spell Map(SpellValue<ValueLocale> spellDetails)
         {
-            return new Worker.Infrastructure.Entities.Spell()
+            return new Spell()
             {
                 Id = Guid.NewGuid(),
                 SpellId = spellDetails.Spell.Id,

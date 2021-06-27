@@ -72,6 +72,7 @@ namespace Worker.Services
 
         public override async Task<QueryMultipleResultReply> GetSpells(QueryMultipleRequest request, ServerCallContext context)
         {
+            logger.LogInformation($"Receive ids : {string.Join(',', request.Ids.ToArray())}");
             var ids = request.Ids.ToArray();
             var spellsDb = await spellRepository.QueryMultipleByIdAsync(ids);
 
