@@ -67,7 +67,7 @@ namespace Item.Grpc.Services
         {
             try
             {
-                var queryResult = await client.GetItemsAsync(request);
+                var queryResult = await client.GetSpellsAsync(request);
                 return queryResult.Value.Select(s => JsonSerializer.Deserialize<SpellValue<ValueLocale>>(s)).ToArray();
             }
             catch (RpcException ex)
@@ -86,7 +86,7 @@ namespace Item.Grpc.Services
         {
             try
             {
-                var queryResult = await client.GetItemAsync(request);
+                var queryResult = await client.GetSpellAsync(request);
                 return JsonSerializer.Deserialize<SpellValue<ValueLocale>>(queryResult.Value);
             }
             catch (RpcException ex)
