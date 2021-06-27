@@ -53,7 +53,7 @@ namespace Worker.Repositories
         {
             var connection = connectionFactory.GetConnection();
 
-            using (var multi = connection.QueryMultiple(SQLQUERY_SELECT_BY_IDS, spellIds))
+            using (var multi = connection.QueryMultiple(SQLQUERY_SELECT_BY_IDS, new { SpellIds = spellIds }))
             {
                 return await multi.ReadAsync<Spell>();
             }

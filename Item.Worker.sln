@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.6.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31410.414
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{54A6FD9B-517D-4E36-8AE2-D53C4993E1FA}"
 EndProject
@@ -16,6 +16,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql", "sql", "{B7D99EE9-3BFF-4C00-B866-E8D9C367E6AB}"
 	ProjectSection(SolutionItems) = preProject
 		deploy\sql\V1.1__ItemNotFound__Table.sql = deploy\sql\V1.1__ItemNotFound__Table.sql
+		deploy\sql\V1.2__SpellNotFound__Table.sql = deploy\sql\V1.2__SpellNotFound__Table.sql
 		deploy\sql\V1__Item__Table.sql = deploy\sql\V1__Item__Table.sql
 		deploy\sql\V2__Spell__Table.sql = deploy\sql\V2__Spell__Table.sql
 	EndProjectSection
