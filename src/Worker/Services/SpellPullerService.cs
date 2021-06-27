@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿using Blizzard.WoWClassic.ApiContract.Core;
+using HtmlAgilityPack;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -57,32 +58,30 @@ namespace Worker.Services
                 if (string.IsNullOrEmpty(spellDescription))
                     spellDescription = spellName;
 
-
-                var newDbSpell = new Spell()
+                var spell = new SpellValue<ValueLocale>()
                 {
-                    CreateAt = DateTime.UtcNow,
-                    CreateBy = "System worker",
-                    DescriptionEnUs = spellDescription,
-                    DescriptionFrFr = spellDescription,
-                    DescriptionEnGb = spellDescription,
-                    NameFrFr = spellName,
-                    NameEnGb = spellName,
-                    NameEnUs = spellName,
-                    SpellId = id,
-                    Value = JsonSerializer.Serialize(new
+                    Spell = new SpellDetailsValue<ValueLocale>()
                     {
-                        spell = new
+                        Id = id,
+                        Key = new LinkItem()
                         {
-                            name = new { en_US = spellName, en_GB = spellName, fr_FR = spellName },
-                            id = id
+                            Href = url
                         },
-                        key = new
+                        Name = new ValueLocale()
                         {
-                            href = url
-                        },
-                        description = new { en_US = spellDescription, en_GB = spellDescription, fr_FR = spellDescription }
-                    })
+                            EnGb = spellName,
+                            EnUs = spellName,
+                            FrFR = spellName
+                        }
+                    },
+                    Description = new ValueLocale()
+                    {
+                        EnGb = spellName,
+                        EnUs = spellName,
+                        FrFR = spellName
+                    }
                 };
+                var newDbSpell = Map(spell);
 
                 using (var scope = serviceProvider.CreateScope())
                 {
@@ -101,30 +100,11 @@ namespace Worker.Services
                     }
                     else
                     {
-                        spellDb.UpdateAt = DateTime.UtcNow;
-                        spellDb.UpdateBy = "System worker";
-
-                        spellDb.NameFrFr = spellName;
-                        spellDb.NameEnUs = spellName;
-                        spellDb.NameEnGb = spellName;
-
-                        spellDb.DescriptionFrFr = spellDescription;
-                        spellDb.DescriptionEnUs = spellDescription;
-                        spellDb.DescriptionEnGb = spellDescription;
-
-                        spellDb.Value = JsonSerializer.Serialize(new
-                        {
-                            spell = new
-                            {
-                                name = new { en_US = spellName, en_GB = spellName, fr_FR = spellName },
-                                id = id
-                            },
-                            key = new
-                            {
-                                href = url
-                            },
-                            description = new { en_US = spellDescription, en_GB = spellDescription, fr_FR = spellDescription }
-                        });
+                        newDbSpell.UpdateAt = DateTime.UtcNow;
+                        newDbSpell.UpdateBy = "System worker";
+                        newDbSpell.Id = spellDb.Id;
+                        newDbSpell.CreateAt = spellDb.CreateAt;
+                        newDbSpell.CreateBy = spellDb.CreateBy;
 
                         _ = await spellRepository.UpdateAsync(spellDb);
                     }
@@ -143,6 +123,24 @@ namespace Worker.Services
                 await Extract();
                 await Task.Delay(TimeSpan.FromDays(1));
             }
+        }
+
+        private Worker.Infrastructure.Entities.Spell Map(Blizzard.WoWClassic.ApiContract.Core.SpellValue<ValueLocale> spellDetails)
+        {
+            return new Worker.Infrastructure.Entities.Spell()
+            {
+                Id = Guid.NewGuid(),
+                SpellId = spellDetails.Spell.Id,
+                CreateAt = DateTime.UtcNow,
+                CreateBy = "System Worker",
+                NameFrFr = spellDetails.Spell.Name.FrFR,
+                NameEnGb = spellDetails.Spell.Name.EnGb,
+                NameEnUs = spellDetails.Spell.Name.EnUs,
+                Value = JsonSerializer.Serialize(spellDetails),
+                DescriptionFrFr = spellDetails.Description.FrFR,
+                DescriptionEnUs = spellDetails.Description.EnUs,
+                DescriptionEnGb = spellDetails.Description.EnGb
+            };
         }
     }
 }
