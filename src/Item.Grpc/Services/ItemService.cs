@@ -2,6 +2,7 @@
 using Blizzard.WoWClassic.ApiContract.Items;
 using Grpc.Core;
 using Grpc.Net.Client;
+using Infrastructure.Core.Interfaces;
 using Item.Grpc.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
@@ -16,13 +17,15 @@ namespace Item.Grpc.Services
     {
         private readonly ILogger<ItemService> logger;
         private readonly ItemGrpcService.ItemGrpcServiceClient client;
+        private readonly IUriResolver uriResolver;
 
-        public ItemService(ILogger<ItemService> logger)
+        public ItemService(ILogger<ItemService> logger, IUriResolver uriResolver)
         {
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
-            var channel = GrpcChannel.ForAddress("http://service-item:6000");
+            var channel = GrpcChannel.ForAddress(uriResolver.Resolve("service-item"));
             this.client = new ItemGrpcService.ItemGrpcServiceClient(channel);
             this.logger = logger;
+            this.uriResolver = uriResolver;
         }
 
         public async Task<ItemDetails[]> GetItemsAsync(QueryMultipleRequest request)

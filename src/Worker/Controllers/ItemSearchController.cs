@@ -1,4 +1,4 @@
-﻿using Infrastructure.Core.Interfaces;
+﻿using Infrastructure.Core.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
