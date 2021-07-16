@@ -26,7 +26,7 @@ namespace Worker
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     Activity.DefaultIdFormat = ActivityIdFormat.W3C;
-                    if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Local")
+                    if (!Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT").Contains("Local"))
                     {
                         webBuilder.ConfigureKestrel(options =>
                         {

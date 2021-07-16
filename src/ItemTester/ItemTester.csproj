@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="WoWClassic.ApiClient" Version="1.0.0-CI-20210618-073727" />
+    <PackageReference Include="WoWClassic.ApiClient" Version="1.0.0-CI-20210627-131826" />
   </ItemGroup>
 
 </Project>
