@@ -40,6 +40,8 @@ namespace Worker
             services.AddScoped<IItemNotFoundRepository, ItemNotFoundRepository>();
             services.AddScoped<ISpellRepository, SpellRepository>();
             services.AddScoped<IItemBusiness, ItemBusiness>();
+            services.AddHostedService<ItemPullerService>();
+            services.AddHostedService<SpellPullerService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
