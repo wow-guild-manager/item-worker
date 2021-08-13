@@ -107,13 +107,13 @@ namespace Worker.Services
                         //await UploadToAzureItem($"{itemId}.json", Encoding.UTF8.GetBytes(JsonSerializer.Serialize(itemDetails)));
                     }
 
-                    var itemMedia = await clientWow.GetItemMediaAsync(itemId, RegionHelper.Us, NamespaceHelper.Static);
+                    //var itemMedia = await clientWow.GetItemMediaAsync(itemId, RegionHelper.Us, NamespaceHelper.Static);
 
-                    if (itemMedia != null && itemMedia.Assets.Any())
-                    {
-                        var downloadResult = await clientWow.DownloadMediaAsync(itemMedia.Assets[0].Value, $"{itemId}.png");
-                        await UploadToAzure($"item_{itemId}.png", downloadResult.Data);
-                    }
+                    //if (itemMedia != null && itemMedia.Assets.Any())
+                    //{
+                    //    var downloadResult = await clientWow.DownloadMediaAsync(itemMedia.Assets[0].Value, $"{itemId}.png");
+                    //    await UploadToAzure($"item_{itemId}.png", downloadResult.Data);
+                    //}
                 }
                 catch (ApiException)
                 {

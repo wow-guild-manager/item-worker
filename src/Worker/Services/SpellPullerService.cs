@@ -39,11 +39,15 @@ namespace Worker.Services
         {
             try
             {
-                var url = $"https://tbc.wowhead.com/spell={id}";
+                var urlEn = $"https://tbc.wowhead.com/spell={id}";
+                var urlFr = $"https://fr.tbc.wowhead.com/spell={id}";
                 var web = new HtmlWeb();
-                var doc = web.Load(url);
+                var docEn = web.Load(urlEn);
+                var docFr = web.Load(urlFr);
 
-                var spellName = doc.DocumentNode
+                var spellName = docEn.DocumentNode
+                                .SelectSingleNode("//h1[@class='heading-size-1']")?.InnerText;
+                var spellNameFr = docFr.DocumentNode
                                 .SelectSingleNode("//h1[@class='heading-size-1']")?.InnerText;
 
                 if (spellName == "Spells")
@@ -52,11 +56,19 @@ namespace Worker.Services
                     return;
                 }
 
-                var spellDescription = doc.DocumentNode
+                if (string.IsNullOrEmpty(spellNameFr))
+                    spellNameFr = spellName;
+
+                var spellDescription = docEn.DocumentNode
+                                        .SelectSingleNode("//td/div[@class='q']")?.InnerText;
+                var spellDescriptionFr = docFr.DocumentNode
                                         .SelectSingleNode("//td/div[@class='q']")?.InnerText;
 
                 if (string.IsNullOrEmpty(spellDescription))
                     spellDescription = spellName;
+
+                if (string.IsNullOrEmpty(spellDescriptionFr))
+                    spellDescriptionFr = spellName;
 
                 var spell = new SpellValue<ValueLocale>()
                 {
@@ -65,20 +77,20 @@ namespace Worker.Services
                         Id = id,
                         Key = new LinkItem()
                         {
-                            Href = url
+                            Href = urlEn
                         },
                         Name = new ValueLocale()
                         {
                             EnGb = spellName,
                             EnUs = spellName,
-                            FrFR = spellName
+                            FrFR = spellNameFr
                         }
                     },
                     Description = new ValueLocale()
                     {
-                        EnGb = spellName,
-                        EnUs = spellName,
-                        FrFR = spellName
+                        EnGb = spellDescription,
+                        EnUs = spellDescription,
+                        FrFR = spellDescriptionFr
                     }
                 };
                 var newDbSpell = Map(spell);
