@@ -19,8 +19,6 @@ namespace Worker.Services
 {
     public class ItemPullerService : BackgroundService
     {
-        private string connectionString = "DefaultEndpointsProtocol=https;AccountName=appepicstorage;AccountKey=Cyr196oHhMjTTnCgCV1A/LXADKlxzwI+v5+NTxp2wzq9bkgFUDK5wB0337gC7CrRfz712vHJD9UVnwe3tXbQaA==;EndpointSuffix=core.windows.net";
-
         private static List<int> itemNotFoundId = new List<int>();
 
         private readonly IServiceProvider serviceProvider;
@@ -103,17 +101,15 @@ namespace Worker.Services
                         }
 
                         await ProcessSpellAsync(itemDetails.PreviewItem.Spells);
-
-                        //await UploadToAzureItem($"{itemId}.json", Encoding.UTF8.GetBytes(JsonSerializer.Serialize(itemDetails)));
                     }
 
-                    //var itemMedia = await clientWow.GetItemMediaAsync(itemId, RegionHelper.Us, NamespaceHelper.Static);
+                    var itemMedia = await clientWow.GetItemMediaAsync(itemId, RegionHelper.Us, NamespaceHelper.Static);
 
-                    //if (itemMedia != null && itemMedia.Assets.Any())
-                    //{
-                    //    var downloadResult = await clientWow.DownloadMediaAsync(itemMedia.Assets[0].Value, $"{itemId}.png");
-                    //    await UploadToAzure($"item_{itemId}.png", downloadResult.Data);
-                    //}
+                    if (itemMedia != null && itemMedia.Assets.Any())
+                    {
+                        var downloadResult = await clientWow.DownloadMediaAsync(itemMedia.Assets[0].Value, $"{itemId}.png");
+                        File.WriteAllBytes($"Medias/item_{itemId}.png", downloadResult.Data);
+                    }
                 }
                 catch (ApiException)
                 {
@@ -129,7 +125,7 @@ namespace Worker.Services
                         });
                     }
 
-                    Console.WriteLine($"Item id not found {itemId}.");
+                    Console.WriteLine($"Item id not found => {itemId}.");
                 }
                 catch (Exception e)
                 {
@@ -220,31 +216,6 @@ namespace Worker.Services
                 DescriptionEnUs = spellDetails.Description.EnUs,
                 DescriptionEnGb = spellDetails.Description.EnGb
             };
-        }
-
-        private string MapQuality(string type)
-        {
-            throw new NotImplementedException();
-        }
-
-        private async Task UploadToAzureItem(string fileName, byte[] data)
-        {
-            BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
-            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("items");
-            BlobClient blobClient = containerClient.GetBlobClient(fileName);
-            MemoryStream stream = new MemoryStream(data);
-            await blobClient.UploadAsync(stream, true);
-            stream.Close();
-        }
-
-        private async Task UploadToAzure(string fileName, byte[] data)
-        {
-            BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
-            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("medias");
-            BlobClient blobClient = containerClient.GetBlobClient(fileName);
-            MemoryStream stream = new MemoryStream(data);
-            await blobClient.UploadAsync(stream, true);
-            stream.Close();
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

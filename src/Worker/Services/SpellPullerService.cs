@@ -52,7 +52,7 @@ namespace Worker.Services
 
                 if (spellName == "Spells")
                 {
-                    Console.WriteLine($"Spell not found ... {id}");
+                    Console.WriteLine($"Spell not found => {id}");
                     return;
                 }
 

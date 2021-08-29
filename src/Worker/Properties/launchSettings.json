@@ -17,16 +17,14 @@
     },
     "Worker": {
       "commandName": "Project",
-      "launchBrowser": true,
       "environmentVariables": {
-        "KeyVaultName": "wowguildepic-dev",
-        "KeyVaultSecret": "6k-Cir_eASgF86WWQ.7_gu26JqL4712kn.",
-        "KeyClientId": "93fea148-3767-4e6f-9644-5ec066abdd52",
+        "ASPNETCORE_ENVIRONMENT": "Local",
+        "WarcraftLog": "ApiKey=9264bb86-6681-4679-ae24-8ed8009f82eb",
         "AZURE_STORAGE_CONNECTION_STRING": "DefaultEndpointsProtocol=https;AccountName=appepicstorage;AccountKey=Cyr196oHhMjTTnCgCV1A/LXADKlxzwI+v5+NTxp2wzq9bkgFUDK5wB0337gC7CrRfz712vHJD9UVnwe3tXbQaA==;EndpointSuffix=core.windows.net",
-        "ASPNETCORE_ENVIRONMENT": "Local"
+        "ConnectionStrings:Default": "Server=tcp:db.epic-wow.online,1433;Initial Catalog=#DBNAME#;Persist Security Info=False;User ID=sa;Password=xxQb6FVes;MultipleActiveResultSets=True;Connection Timeout=30;"
       },
-      "dotnetRunMessages": "true",
-      "applicationUrl": "https://localhost:5001;http://localhost:5000"
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "dotnetRunMessages": "true"
     },
     "Docker": {
       "commandName": "Docker",
