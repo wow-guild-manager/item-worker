@@ -19,7 +19,7 @@
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Local",
-        "WarcraftLog": "ApiKey=9264bb86-6681-4679-ae24-8ed8009f82eb",
+        "WarcraftLog:ApiKey": "9264bb86-6681-4679-ae24-8ed8009f82eb",
         "AZURE_STORAGE_CONNECTION_STRING": "DefaultEndpointsProtocol=https;AccountName=appepicstorage;AccountKey=Cyr196oHhMjTTnCgCV1A/LXADKlxzwI+v5+NTxp2wzq9bkgFUDK5wB0337gC7CrRfz712vHJD9UVnwe3tXbQaA==;EndpointSuffix=core.windows.net",
         "ConnectionStrings:Default": "Server=tcp:db.epic-wow.online,1433;Initial Catalog=#DBNAME#;Persist Security Info=False;User ID=sa;Password=xxQb6FVes;MultipleActiveResultSets=True;Connection Timeout=30;"
       },

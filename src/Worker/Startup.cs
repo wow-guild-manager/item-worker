@@ -1,9 +1,11 @@
+using HealthChecks.UI.Client;
 using Infrastructure.Core.Extensions;
 using Infrastructure.Core.Helpers;
 using Infrastructure.Core.Interfaces;
 using Infrastructure.Core.Middlewares;
 using Infrastructure.Core.Persistence;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
@@ -40,8 +42,8 @@ namespace Worker
             services.AddScoped<IItemNotFoundRepository, ItemNotFoundRepository>();
             services.AddScoped<ISpellRepository, SpellRepository>();
             services.AddScoped<IItemBusiness, ItemBusiness>();
-            services.AddHostedService<ItemPullerService>();
-            services.AddHostedService<SpellPullerService>();
+            //services.AddHostedService<ItemPullerService>();
+            //services.AddHostedService<SpellPullerService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -64,6 +66,11 @@ namespace Worker
             {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapGrpcService<ItemService>();
+                endpoints.MapHealthChecks("/health", new HealthCheckOptions
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
             });
         }
     }
