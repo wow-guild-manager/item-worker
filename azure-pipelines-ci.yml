@@ -40,7 +40,7 @@ steps:
       containerRegistry: 'DockerHub'
       repository: 'hantse/wgm-item-worker'
       command: 'buildAndPush'
-      Dockerfile: 'src/Worker/Dockerfile'
+      Dockerfile: 'src/Service.Item.Api/Dockerfile'
       buildContext: '.'
       tags: |
         $(tag)
