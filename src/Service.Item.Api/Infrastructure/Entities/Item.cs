@@ -20,6 +20,8 @@ namespace Service.Item.Api.Infrastructure.Entities
 
         public string InventoryType { get; set; }
 
+        public string Binding { get; set; }
+
         public string Value { get; set; }
     }
 }

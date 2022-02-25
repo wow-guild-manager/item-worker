@@ -15,12 +15,12 @@ namespace Service.Item.Api.Repositories
     {
         private const string SQLQUERY_SELECT_SINGLE_BY_ID = "SELECT TOP (1) * FROM Item WHERE ItemId = @ItemId;";
 
-        private const string SQLQUERY_INSERT = "INSERT INTO Item (Id, ItemId, NameFrFr, NameEnUs, NameEnGb, Quality, ItemClass, ItemSubClass, InventoryType, Value, CreateAt, CreateBy) " +
-                                                "VALUES (@Id, @ItemId, @NameFrFr, @NameEnUs, @NameEnGb, @Quality, @ItemClass, @ItemSubClass, @InventoryType, @Value, @CreateAt, @CreateBy);";
+        private const string SQLQUERY_INSERT = "INSERT INTO Item (Id, ItemId, NameFrFr, NameEnUs, NameEnGb, Quality, ItemClass, ItemSubClass, InventoryType, Binding, Value, CreateAt, CreateBy) " +
+                                                "VALUES (@Id, @ItemId, @NameFrFr, @NameEnUs, @NameEnGb, @Quality, @ItemClass, @ItemSubClass, @InventoryType, @Binding, @Value, @CreateAt, @CreateBy);";
 
         private const string SQLQUERY_UPDATE = "UPDATE Item SET ItemId = @ItemId, NameFrFr = @NameFrFr, NameEnUs = @NameEnUs, NameEnGb = @NameEnGb, " +
                                         "Quality = @Quality, ItemClass = @ItemClass, ItemSubClass = @ItemSubClass, InventoryType = @InventoryType, " +
-                                        "Value = @Value, UpdateAt = @UpdateAt, UpdateBy = @UpdateBy " +
+                                        "Value = @Value, Binding = @Binding, UpdateAt = @UpdateAt, UpdateBy = @UpdateBy " +
                                         "WHERE ItemId = @ItemId;";
 
         private const string SQLQUERY_SELECT_BY_IDS = "SELECT * FROM Item WHERE ItemId IN @ItemIds;";

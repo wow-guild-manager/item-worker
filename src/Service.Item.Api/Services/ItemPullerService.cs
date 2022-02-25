@@ -105,6 +105,7 @@ namespace Service.Item.Api.Services
                             await itemRepository.InsertAsync(itemDb);
                         }
 
+                        await File.WriteAllTextAsync($"Json/item_{itemId}.png", JsonSerializer.Serialize(itemDetails));
                         await ProcessSpellAsync(itemDetails.PreviewItem.Spells);
                     }
 
@@ -198,8 +199,9 @@ namespace Service.Item.Api.Services
                 NameEnUs = itemDetails.Name.EnUs,
                 Quality = itemDetails.PreviewItem.Quality.Type,
                 InventoryType = itemDetails.PreviewItem.InventoryType.Type,
-                ItemClass = itemDetails.ItemClass.Name.EnUs,
-                ItemSubClass = itemDetails.ItemSubclass.Name.EnUs,
+                ItemClass = itemDetails.ItemClass?.Name?.EnUs,
+                ItemSubClass = itemDetails.ItemSubclass?.Name?.EnUs,
+                Binding = itemDetails.PreviewItem?.Binding?.Name?.EnUs,
                 Value = JsonSerializer.Serialize(itemDetails),
                 CreateBy = "System Service.Item.Api"
             };
