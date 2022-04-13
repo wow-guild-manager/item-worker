@@ -22,7 +22,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
-    <PackageReference Include="WGM.Infrastructure.Core" Version="1.0.0-CI-20211020-130924" />
+    <PackageReference Include="WGM.Infrastructure.Core" Version="1.0.0-CI-20220105-090159" />
     <PackageReference Include="WoWClassic.ApiClient" Version="1.0.0-CI-20220305-225207" />
   </ItemGroup>
 

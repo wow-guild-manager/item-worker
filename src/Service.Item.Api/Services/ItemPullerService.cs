@@ -28,6 +28,8 @@ namespace Service.Item.Api.Services
         {
             this.serviceProvider = serviceProvider;
             this.logger = logger;
+            if (!Directory.Exists("Json"))
+                Directory.CreateDirectory("Json");
         }
 
         private async Task Extract()
@@ -105,7 +107,7 @@ namespace Service.Item.Api.Services
                             await itemRepository.InsertAsync(itemDb);
                         }
 
-                        await File.WriteAllTextAsync($"Json/item_{itemId}.png", JsonSerializer.Serialize(itemDetails));
+                        // await File.WriteAllTextAsync($"Json/item_{itemId}.json", JsonSerializer.Serialize(itemDetails));
                         await ProcessSpellAsync(itemDetails.PreviewItem.Spells);
                     }
 
